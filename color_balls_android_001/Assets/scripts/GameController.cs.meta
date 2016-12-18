@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 10a3ce3c56ba9864d889a723cb4a1276
+timeCreated: 1481563976
+licenseType: Free
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences:
+  - spawnerMonstersPref: {fileID: 137008, guid: e9212e9a51469fb4c8095089a8b68d3b,
+      type: 2}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
