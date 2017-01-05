@@ -1,13 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.EventSystems;
 
 public class SpawnBullets : MonoBehaviour {
 
-	//private float forceSpeed = 50;
+	private float forceSpeed = 50;
 	public GameObject bulletPref;
 	private GameObject prefInst;
 	private Vector3 mousePosition;
-	//private Vector3 directionRay;
+	private Vector3 directionRay;
 	private Vector3 position;
 	//private Vector3 direction;
 
@@ -16,7 +17,10 @@ public class SpawnBullets : MonoBehaviour {
 	}
 
 	void Update() {
-		if (GameController.alive && Input.GetMouseButtonDown (0)) {
+		if (GameController.alive && 
+			Input.GetMouseButtonDown (0) && 
+			!EventSystem.current.IsPointerOverGameObject()) {
+
 			Shoot();
 		}
 	}
@@ -27,10 +31,13 @@ public class SpawnBullets : MonoBehaviour {
 		Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 		if (Physics.Raycast(ray, out hit, Mathf.Infinity)) {
 			position = hit.point;
-			//Transform objectHit = hit.transform;
-			prefInst = Instantiate (bulletPref, position, Quaternion.identity) as GameObject;
+			//prefInst = Instantiate (bulletPref, position, Quaternion.identity) as GameObject;
+			directionRay = transform.TransformDirection (position - transform.position);    
+			prefInst = Instantiate (bulletPref, transform.position, Quaternion.identity) as GameObject;
+			Rigidbody rb = prefInst.GetComponent<Rigidbody> ();
+			//rb.AddForce (directionRay * forceSpeed);
+			rb.AddForce (directionRay.x * forceSpeed, 10 * forceSpeed, directionRay.z * forceSpeed);
 		}         
-		//prefInst = Instantiate (bulletPref, mousePosition, Quaternion.identity) as GameObject;
 	}
 		
 /*	void ShootOld(){

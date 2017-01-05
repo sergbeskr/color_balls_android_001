@@ -7,6 +7,7 @@ public class GameController : MonoBehaviour {
 	public static float damage = 25;
 	public static int number = 10;
 	public static bool alive = true;
+	public static float canonHealth = 100;
 
 	// Use this for initialization
 	void Start () {
