@@ -10,6 +10,7 @@ public class SpawnBullets : MonoBehaviour {
 	private Vector3 mousePosition;
 	private Vector3 directionRay;
 	private Vector3 position;
+	private float distance;
 	//private Vector3 direction;
 
 	void Start() {
@@ -36,7 +37,10 @@ public class SpawnBullets : MonoBehaviour {
 			prefInst = Instantiate (bulletPref, transform.position, Quaternion.identity) as GameObject;
 			Rigidbody rb = prefInst.GetComponent<Rigidbody> ();
 			//rb.AddForce (directionRay * forceSpeed);
-			rb.AddForce (directionRay.x * forceSpeed, 10 * forceSpeed, directionRay.z * forceSpeed);
+			distance = Vector3.Distance(position, transform.position);
+			Debug.Log(distance/35f);
+			forceSpeed = Mathf.Sqrt((distance*9.8f)/(distance/35f));
+			rb.AddForce (directionRay.x * forceSpeed, 35 * forceSpeed, directionRay.z * forceSpeed);
 		}         
 	}
 		
