@@ -12,7 +12,9 @@ public class GameController : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		spawnerSpawn ();
-		//////GameObject temp = new GameObject ("temp", new System.Type[]{typeof (CapsuleCollider)});// with params
+		//////GameObject temp = new GameObject ("temp", new System.Type[]{typeof (CapsuleCollider)});// with params example
+
+
 	}
 	
 	// Update is called once per frame
