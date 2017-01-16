@@ -15,7 +15,6 @@ public class Health : MonoBehaviour {
 		if (GameController.canonHealth <= 0) {
 			GameController.canonHealth = 0;
 			GameController.alive = false;
-			Destroy (GameObject.FindGameObjectWithTag("monster"));
 		}
 
 	}

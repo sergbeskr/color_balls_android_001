@@ -1,8 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine.EventSystems;
 
-public class SpawnBullets : MonoBehaviour {
+public class Shooting : MonoBehaviour {
 
 	private float forceSpeed = 50;
 	public GameObject bulletPref;
@@ -13,10 +14,6 @@ public class SpawnBullets : MonoBehaviour {
 	private float distance;
 	//private Vector3 direction;
 
-	void Start() {
-		
-	}
-
 	void Update() {
 		if (GameController.alive && 
 			Input.GetMouseButtonDown (0) && 
@@ -25,6 +22,8 @@ public class SpawnBullets : MonoBehaviour {
 			Shoot();
 		}
 	}
+
+
 
 	void Shoot(){
 		//mousePosition = Camera.main.ScreenToWorldPoint (new Vector3(Input.mousePosition.x, Input.mousePosition.y, 1));
