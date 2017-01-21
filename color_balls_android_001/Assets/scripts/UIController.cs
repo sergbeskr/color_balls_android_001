@@ -1,17 +1,52 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
-using System.Collections.Generic;
-using UnityEngine.SceneManagement;
+using UnityEngine.EventSystems;
 
 public class UIController : MonoBehaviour {
+
+	private static UIController _instance;
 
 	[SerializeField] 
 	private Slider sliderHealth; 
 	[SerializeField] 
 	private Canvas gameCanvas;
-	[SerializeField]
-	private List<Button> buttons = new List<Button>();
+
+	public delegate void OnChangeColorMethod (string btnColor);
+
+	public static event OnChangeColorMethod OnChangeColor;
+
+	#region Singleton
+
+	private UIController()
+	{
+
+	}
+
+	public static UIController Instance
+	{
+		get {
+			if (_instance == null) {
+				_instance = new UIController ();
+			}
+
+			return new GameObject ("(singleton)UIController").AddComponent<UIController> ();
+		}
+	}
+
+	void Awake()
+	{
+		if (_instance != null)
+		{
+			Destroy(gameObject);
+			return;
+		}
+
+		_instance = this;
+		DontDestroyOnLoad(gameObject);
+	}
+
+	#endregion 
 
 	// Use this for initialization
 	void Start () {
@@ -29,8 +64,9 @@ public class UIController : MonoBehaviour {
 	public void OnClikcColorButton()
 	{
 		Debug.Log ("Click");
-		foreach (Button b in buttons) {
-
+		string btnColorName = EventSystem.current.currentSelectedGameObject.name;
+		if (OnChangeColor != null) {
+			OnChangeColor (btnColorName);
 		}
 	}
 
