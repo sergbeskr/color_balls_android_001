@@ -64,9 +64,9 @@ public class BulletsElement : MonoBehaviour, IBulletsElement {
 		transform.position = position;
 	}
 
-	public void AddForce(Vector3 direction, float speed)
+	public void AddForce(Vector3 direction, float speed, float thirtyFive)
 	{
-		rb.AddForce(direction.x * speed, 35f * speed, direction.z * speed);
+		rb.AddForce(direction.x * speed, thirtyFive * speed, direction.z * speed);
 	}
 
 	void Explosion()
