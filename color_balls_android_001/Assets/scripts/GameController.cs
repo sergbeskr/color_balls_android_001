@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
 
 public class GameController : MonoBehaviour {
 
@@ -8,6 +8,17 @@ public class GameController : MonoBehaviour {
 	public static int number = 10;
 	public static bool alive = true;
 	public static float canonHealth = 100;
+	public static float maxMonsterHealth = 50;
+	public static float spawnMonstersRadius = 5;
+
+	public static Dictionary<string, Color> colors = new Dictionary<string, Color> () {
+		{"red", Color.red},
+		{"yellow", Color.yellow},
+		{"green", Color.green},
+		{"blue", Color.blue},
+		{"magenta", Color.magenta},
+	};
+
 
 	// Use this for initialization
 	void Start () {

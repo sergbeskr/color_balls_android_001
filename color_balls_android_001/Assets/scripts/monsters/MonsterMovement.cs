@@ -4,13 +4,14 @@ using System.Collections;
 public class MonsterMovement : MonoBehaviour {
 
 	private NavMeshAgent agent;
+
+	[SerializeField]
 	private Transform player;
 
 	// Use this for initialization
 	void Start () {
 		
 		agent = GetComponent<NavMeshAgent> ();
-		player = GameObject.Find ("Canon").transform;
 
 	}
 	
@@ -25,7 +26,8 @@ public class MonsterMovement : MonoBehaviour {
 	{
 		if (collider.gameObject.tag == "Fence") {
 			
-			Destroy (gameObject);
+			//Destroy (gameObject);
+			GetComponent<IMonster>().monsterHealth = 0;
 			GameController.canonHealth -= GameController.damage; 
 
 		}

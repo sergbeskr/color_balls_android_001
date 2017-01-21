@@ -19,21 +19,22 @@ public class ShootController : MonoBehaviour {
 	private float distance;
 	private float forceSpeed = 50;
 
+	IBulletsElement element;
+
+
 	public void Update()
 	{
+
 		if(Input.GetMouseButtonDown (0) && GameController.alive && !EventSystem.current.IsPointerOverGameObject()){
 			if (dps < 0)
 			{
-				dps = 0.1f;
-				IBulletsElement element = pool.GetElement();                
-				element.SetPosition(emitter.position);
-				element.Activate();
+				ActivateBall ();
 
 				RaycastHit hit;
 				Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 				if (Physics.Raycast(ray, out hit, Mathf.Infinity)) {
 					position = hit.point;
-					directionRay = transform.TransformDirection (position - emitter.position);  
+					directionRay = emitter.TransformDirection (position - emitter.position);  
 					distance = Vector3.Distance(position, emitter.position);
 					forceSpeed = Mathf.Sqrt ((distance * 9.8f) / (distance / 35f));
 
@@ -50,6 +51,14 @@ public class ShootController : MonoBehaviour {
 		{
 			dps = -1;
 		}
+	}
+
+	void ActivateBall()
+	{
+		dps = 0.1f;
+		element = pool.GetElement();                
+		element.SetPosition(emitter.position);
+		element.Activate();
 	}
 			
 }

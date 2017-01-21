@@ -58,4 +58,5 @@ public class Shooting : MonoBehaviour {
 		Debug.Log(mousePosition);
 		Debug.Log(rb.transform.position);
 	}*/
+
 }
