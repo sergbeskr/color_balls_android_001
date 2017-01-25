@@ -23,23 +23,29 @@ public class ShootController : MonoBehaviour {
 
 	public void Update()
 	{
-
-		if(Input.GetMouseButtonDown (0) && GameController.Instance.playerAlive && !EventSystem.current.IsPointerOverGameObject()){
+		if (!UIController.isPause) {
+			if (Input.GetMouseButtonDown (0) && GameController.playerAlive && !EventSystem.current.IsPointerOverGameObject ()) {
 				ActivateBall ();
 
-			AudioManager.Instance.PlaySoundInternal ("boom1", true);
+				AudioManager.Instance.PlaySoundInternal ("boom1", true);
 
 				RaycastHit hit;
-				Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-				if (Physics.Raycast(ray, out hit, Mathf.Infinity)) {
+				Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
+				if (Physics.Raycast (ray, out hit, Mathf.Infinity)) {
 					position = hit.point;
 					directionRay = emitter.TransformDirection (position - emitter.position);  
+<<<<<<< HEAD
 					distance = Vector3.Distance(position, emitter.position);
 					forceSpeed = Mathf.Sqrt ((distance * 9.8f) / (distance / thirtyFive));
+=======
+					distance = Vector3.Distance (position, emitter.position);
+					forceSpeed = Mathf.Sqrt ((distance * 9.8f) / (distance / 35f));
+>>>>>>> master
 
 					element.AddForce (directionRay, forceSpeed, thirtyFive);
 				}
 			}
+		}
 	}
 
 	void ActivateBall()

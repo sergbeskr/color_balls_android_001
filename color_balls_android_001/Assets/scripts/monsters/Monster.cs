@@ -9,7 +9,7 @@ public class Monster : MonoBehaviour, IMonster {
 	public void Awake()
 	{
 		BulletsElement.OnBang += Hit;
-		monsterHealth = GameController.Instance.maxMonsterHealth;
+		monsterHealth = GameController.maxMonsterHealth;
 	}
 
 	public void Death ()

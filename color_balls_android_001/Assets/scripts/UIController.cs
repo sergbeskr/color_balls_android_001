@@ -20,39 +20,15 @@ public class UIController : MonoBehaviour {
 
 	public static event OnChangeColorMethod OnChangeColor;
 
-	public bool isPause = false;
+	public static bool isPause = false;
+	public static bool isStarted = false;
 
-	#region Singleton
-
-	private UIController()
-	{
-
-	}
-
-	public static UIController Instance
-	{
-		get {
-			if (_instance == null) {
-				_instance = new UIController ();
-			}
-
-			return new GameObject ("(singleton)UIController").AddComponent<UIController> ();
-		}
-	}
 
 	void Awake()
 	{
-		if (_instance != null)
-		{
-			Destroy(gameObject);
-			return;
-		}
-
-		_instance = this;
 		DontDestroyOnLoad(gameObject);
 	}
 
-	#endregion 
 
 	// Use this for initialization
 	void Start () {
@@ -65,8 +41,8 @@ public class UIController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		sliderHealth.value = GameController.Instance.canonHealth;
-		if (!GameController.Instance.playerAlive) {
+		sliderHealth.value = GameController.canonHealth;
+		if (!GameController.playerAlive) {
 		}
 	}
 
@@ -84,15 +60,20 @@ public class UIController : MonoBehaviour {
 		gameCanvas.transform.GetChild (4).gameObject.SetActive (false);// panel start dont active
 		gameUI.gameObject.SetActive (true);
 		AudioManager.Instance.PlayMusicInternal ("Level1");
+		isStarted = true;
 	}
 
 	public void OnPauseClick()
 	{
 		isPause = !isPause;
 		if (isPause) {
+			Time.timeScale = 0;
 			gamePause.gameObject.SetActive (true);
+			gameUI.gameObject.SetActive (false);
 		} else {
+			Time.timeScale = 1;
 			gamePause.gameObject.SetActive (false);
+			gameUI.gameObject.SetActive (true);
 		}
 	}
 
