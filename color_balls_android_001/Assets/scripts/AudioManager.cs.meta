@@ -1,12 +1,12 @@
 fileFormatVersion: 2
 guid: d89642177a35c414d93480f9d835b8cd
-timeCreated: 1485253446
+timeCreated: 1485351629
 licenseType: Free
 MonoImporter:
   serializedVersion: 2
   defaultReferences:
-  - soundPrefab: {fileID: 1000012066793324, guid: d77c7b7d45964454d88a09c9216bd445,
-      type: 2}
+  - musicGroup: {fileID: 24300001, guid: 645a7cef706684446bb1c1a890b144f1, type: 2}
+  - soundGroup: {fileID: 24300001, guid: 04e1be889fdfa4c4b9e5a97eecc792c0, type: 2}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

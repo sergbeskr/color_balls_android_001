@@ -8,8 +8,6 @@ public class BulletsElement : MonoBehaviour, IBulletsElement {
 	private Transform sphere;
 
 	[SerializeField]
-	private float forceExp = 500f;
-	[SerializeField]
 	private float radiusExp = 10f;
 
 	private ParticleSystem explosion;

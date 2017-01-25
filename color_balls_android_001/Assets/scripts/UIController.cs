@@ -6,15 +6,21 @@ using UnityEngine.SceneManagement;
 
 public class UIController : MonoBehaviour {
 
-	private static UIController _instance;
-
 	[SerializeField] 
 	private Slider sliderHealth; 
 	[SerializeField] 
 	private Canvas gameCanvas;
 
-	private Transform gameUI;
-	private Transform gamePause;
+	[SerializeField]
+	private GameObject gameUI;
+	[SerializeField]
+	private GameObject gamePause;
+	[SerializeField]
+	private GameObject audioSettings;
+	[SerializeField]
+	private GameObject gameOver;
+	[SerializeField]
+	private GameObject gameStart;
 
 	public delegate void OnChangeColorMethod (string btnColor);
 
@@ -23,26 +29,17 @@ public class UIController : MonoBehaviour {
 	public static bool isPause = false;
 	public static bool isStarted = false;
 
-
-	void Awake()
-	{
-		DontDestroyOnLoad(gameObject);
-	}
-
-
 	// Use this for initialization
 	void Start () {
-		AudioManager.Instance.PlayMusicInternal ("Startsong");
-
-		gamePause = gameCanvas.transform.GetChild (0);
-		gameUI = gameCanvas.transform.GetChild (3);
-
+		AudioManager.PlayMusic ("Startsong");
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		sliderHealth.value = GameController.canonHealth;
 		if (!GameController.playerAlive) {
+			gameUI.SetActive (false);
+			gameOver.SetActive (true);
 		}
 	}
 
@@ -57,9 +54,9 @@ public class UIController : MonoBehaviour {
 
 	public void OnStartGameClick()
 	{
-		gameCanvas.transform.GetChild (4).gameObject.SetActive (false);// panel start dont active
-		gameUI.gameObject.SetActive (true);
-		AudioManager.Instance.PlayMusicInternal ("Level1");
+		gameStart.SetActive (false);// panel start dont active
+		gameUI.SetActive (true);
+		AudioManager.PlayMusic("Level1");
 		isStarted = true;
 	}
 
@@ -68,18 +65,30 @@ public class UIController : MonoBehaviour {
 		isPause = !isPause;
 		if (isPause) {
 			Time.timeScale = 0;
-			gamePause.gameObject.SetActive (true);
-			gameUI.gameObject.SetActive (false);
+			gamePause.SetActive (true);
+			gameUI.SetActive (false);
 		} else {
 			Time.timeScale = 1;
-			gamePause.gameObject.SetActive (false);
-			gameUI.gameObject.SetActive (true);
+			gamePause.SetActive (false);
+			gameUI.SetActive (true);
 		}
 	}
 
 	public void OnExitClick()
 	{
 		Application.Quit ();
+	}
+
+	public void OnAudioSettingsButton()
+	{
+		gamePause.SetActive (false);
+		audioSettings.SetActive (true);
+	}
+
+	public void OnRestart()
+	{
+		int scene = SceneManager.GetActiveScene().buildIndex;
+		SceneManager.LoadScene(scene, LoadSceneMode.Single);
 	}
 		
 }

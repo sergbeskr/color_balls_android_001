@@ -2,14 +2,11 @@
 using System.Collections;
 using System.Collections.Generic;
 
+using UnityEngine.Audio;
+
 public class AudioManager : MonoBehaviour {
 
 	private static AudioManager _instance;
-
-	string currentMusicName;
-
-	private GameObject soundPrefab;
-	//List<AudioClip> _sounds = new List<AudioClip>();
 
 	#region Singleton
 
@@ -40,158 +37,155 @@ public class AudioManager : MonoBehaviour {
 		_instance = this;
 		DontDestroyOnLoad(gameObject);
 
+		musicVolume = 1;
+		soundVolume = 1;
 	}
 
 	#endregion
 
-	#region Music
+	public float fadeSpeed = 3; 
 
-	public void PlayMusicInternal(string musicName)
+	private static AudioSource last, current;
+	private static float musicVolume, soundVolume;
+	private static bool muteMusic, muteSound;
+
+	public static void SoundVolume(float volume)
 	{
-		if (string.IsNullOrEmpty(musicName)) {
+		soundVolume = volume;
+	}
+
+	public static void MusicVolume(float volume)
+	{
+		musicVolume = volume;
+		if(current) current.volume = volume;
+	}
+
+	public static void MuteSound(bool value)
+	{
+		muteSound = value;
+	}
+
+	public static void MuteMusic(bool value)
+	{
+		muteMusic = value;
+		if(current) current.mute = value;
+	}
+
+
+	void PlaySoundInternal(string soundName)
+	{
+		if(string.IsNullOrEmpty(soundName))
+		{
+			Debug.Log("Sound empty or null");
+			return;
+		}
+
+		StartCoroutine(GetSound(soundName));
+	}
+
+	public static void PlaySound(string name)
+	{
+		_instance.PlaySoundInternal(name);
+	}
+
+	void PlayMusicInternal(string musicName)
+	{
+		if(string.IsNullOrEmpty(musicName))
+		{
 			Debug.Log("Music empty or null");
 			return;
 		}
 
-		if (currentMusicName == musicName) {
-			Debug.Log("Music already playing: " + musicName);
-			return;
-		}
-
-		StopMusicInternal ();
-
-		currentMusicName = musicName;
-
-		AudioClip musicClip = LoadClip("Music/" + musicName);
-
-		GameObject music = new GameObject("Music: " + musicName);
-		AudioSource musicSource = music.AddComponent<AudioSource>();
-
-		music.transform.SetParent(transform);
-
-		musicSource.loop = true;
-		musicSource.priority = 0;
-		musicSource.ignoreListenerPause = true;
-		musicSource.clip = musicClip;
-		musicSource.Play();
+		StartCoroutine(GetMusic(musicName));
 	}
 
-	void StopMusicInternal()
+	public static void PlayMusic(string name)
 	{
-		currentMusicName = "";
+		_instance.PlayMusicInternal(name);
 	}
 
-	#endregion
-
-	#region Sound
-
-	public void PlaySoundInternal(string soundName, bool pausable)
+	void LateUpdate()
 	{
-		if (string.IsNullOrEmpty(soundName)) {
-			Debug.Log("Sound null or empty");
-			return;
-		}
-
-		int sameCount = 0; // duplicates
-
-		/*foreach (AudioClip audioClip in _sounds)
-		{
-			if (audioClip.name == soundName)
-				sameCount++;
-		}
-
-		if (sameCount > 4)
-		{
-			Debug.Log("Too much duplicates for sound: " + soundName);
-			return;
-		}
-
-		if (_sounds.Count > 6) {
-			Debug.Log("Too much sounds");
-			return;
-		}*/
-		Debug.Log ("click");
-
-		StartCoroutine(PlaySoundInternalSoon(soundName, pausable));
+		Fader();
 	}
 
+	void Fader()
+	{
+		if(last == null) return;
 
-	IEnumerator PlaySoundInternalSoon(string soundName, bool pausable)
-	{		
-		ResourceRequest request = LoadClipAsync("Sounds/" + soundName);
+		last.volume = Mathf.Lerp(last.volume, 0, fadeSpeed * Time.deltaTime);
+		current.volume = Mathf.Lerp(current.volume, musicVolume, fadeSpeed * Time.deltaTime);
 
-		while (!request.isDone)
+		if(last.volume < 0.05f)
+		{
+			last.volume = 0;
+			Destroy(last.gameObject);
+		}
+	}
+
+	IEnumerator GetMusic(string musicName)
+	{
+		ResourceRequest request = LoadAsync("Music/" + musicName);
+
+		while(!request.isDone)
 		{
 			yield return null;
 		}
-		AudioClip soundClip = (AudioClip)request.asset;
 
-		if (soundClip == null)
+		AudioClip clip = (AudioClip)request.asset;
+
+		if(clip == null)
+		{
+			Debug.Log("Music not loaded: " + musicName);
+			return false;
+		}
+
+		last = current;
+
+		GameObject obj = new GameObject("Music: " + musicName);
+		AudioSource au = obj.AddComponent<AudioSource>();
+		obj.transform.parent = transform;
+		au.playOnAwake = false;
+		au.loop = true;
+		au.volume = (last == null) ? musicVolume : 0;
+		au.mute = muteMusic;
+		au.clip = clip;
+		au.Play();
+		current = au;
+	}
+
+	IEnumerator GetSound(string soundName)
+	{
+		ResourceRequest request = LoadAsync("Sounds/" + soundName);
+
+		while(!request.isDone)
+		{
+			yield return null;
+		}
+
+		AudioClip clip = (AudioClip)request.asset;
+
+		if(clip == null)
 		{
 			Debug.Log("Sound not loaded: " + soundName);
+			return false;
 		}
 
-
-		//soundPrefab = Resources.Load ("AudioManager/sound") as GameObject;
-		//GameObject soundGObj = Instantiate(soundPrefab) as GameObject;
-		GameObject soundGObj = new GameObject("Sound:" + soundName);
-		AudioSource soundSource = soundGObj.AddComponent<AudioSource>();
-		soundGObj.transform.parent = transform;
-
-		//AudioSource soundSource = soundGObj.GetComponent<AudioSource>();
-
-		//soundSource.volume
-		soundSource.playOnAwake = false;
-		soundSource.loop = false;
-		soundSource.clip = soundClip;
-		soundSource.Play();
-		soundSource.ignoreListenerPause = !pausable;
-		Destroy (soundGObj, soundSource.clip.length);
-		//_sounds.Add(soundSource.clip);
+		GameObject obj = new GameObject("Sound: " + soundName);
+		AudioSource au = obj.AddComponent<AudioSource>();
+		obj.transform.parent = transform;
+		au.playOnAwake = false;
+		au.loop = false;
+		au.volume = soundVolume;
+		au.mute = muteSound;
+		au.clip = clip;
+		au.Play();
+		Destroy(obj, clip.length);
 	}
 
-	#endregion
-
-	AudioClip LoadClip(string name)
+	ResourceRequest LoadAsync(string name)
 	{
 		string path = "AudioManager/" + name;
-		AudioClip clip = Resources.Load<AudioClip>(path);
-		return clip;
-	}
-
-	ResourceRequest LoadClipAsync(string name)
-	{
-		string path = "AudioManager/" + name;
-		Debug.Log ("Loading");
 		return Resources.LoadAsync<AudioClip>(path);
 	}
-
-	public static void Pause()
-	{
-		AudioListener.pause = true;
-	}
-
-	public static void UnPause()
-	{
-		AudioListener.pause = false;
-	}
-
-	/*void Update()
-	{
-		// Destory only one sound per frame
-		AudioClip soundToDelete = null;
-
-		foreach (AudioClip sound in _sounds) {
-			if (IsSoundFinished (sound)) {
-				soundToDelete = sound;
-				break;
-			}
-		}
-
-		if (soundToDelete != null) {
-			soundToDelete.IsValid = false;
-			_sounds.Remove (soundToDelete);
-			Destroy (soundToDelete.Source.gameObject);
-		}
-	}*/
 }

@@ -26,7 +26,7 @@ public class ShootController : MonoBehaviour {
 			if (Input.GetMouseButtonDown (0) && GameController.playerAlive && !EventSystem.current.IsPointerOverGameObject ()) {
 				ActivateBall ();
 
-				AudioManager.Instance.PlaySoundInternal ("boom1", true);
+				AudioManager.PlaySound ("boom1");
 
 				RaycastHit hit;
 				Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);

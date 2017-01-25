@@ -3,35 +3,23 @@ using System.Collections;
 
 public class AudioSettings : MonoBehaviour {
 
-	void SetSoundVolumeInternal(float volume)
+	public void SoundVolume(float volume)
 	{
-		//_volumeSound = volume;
-		SaveSettings();
-		ApplySoundVolume();
+		AudioManager.SoundVolume(volume);
 	}
 
-	//float GetSoundVolumeInternal()
-	//{
-	//	return; //_volumeSound;
-	//}
-
-	void SaveSettings()
+	public void MusicVolume(float volume)
 	{
-		//PlayerPrefs.SetFloat("SM_SoundVolume", _volumeSound);
+		AudioManager.MusicVolume(volume);
 	}
 
-	void LoadSettings()
+	public void ToggleMusicMuted(bool value)
 	{
-		//_volumeSound = PlayerPrefs.GetFloat("SM_SoundVolume", 1);
-
-		ApplySoundVolume();
+		AudioManager.MuteMusic(!value);
 	}
 
-	void ApplySoundVolume()
-	{//
-		//foreach (AudioSource sound in _sounds)
-		//{
-			//sound.volume = _volumeSound * DefaultSoundVolume;
-		//}
+	public void ToggleSoundMuted(bool value)
+	{
+		AudioManager.MuteSound(!value);
 	}
 }
