@@ -9,28 +9,27 @@ public class Monster : MonoBehaviour, IMonster {
 	public void Awake()
 	{
 		BulletsElement.OnBang += Hit;
-		monsterHealth = GameController.maxMonsterHealth;
+		monsterHealth = GameController.Instance.maxMonsterHealth;
 	}
 
-	void Death ()
+	public void Death ()
 	{
+		BulletsElement.OnBang -= Hit;
 		Destroy (gameObject);
-		Debug.Log("Death");
 	}
 
 	public void Hit(Collider c, Color ballColor)
 	{
 		if (c.transform == this.transform) {
 			if (ballColor == monsterColor) {
-				monsterHealth = 0;
+				Death ();
 			} else {
 				monsterHealth -= 15;
-				Debug.Log ("health " + monsterHealth);
 			}
 		}
 
 		if (monsterHealth <= 0) {
-			BulletsElement.OnBang -= Hit;
+			
 			Death ();
 		}
 	}

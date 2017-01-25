@@ -26,9 +26,8 @@ public class MonsterMovement : MonoBehaviour {
 	{
 		if (collider.gameObject.tag == "Fence") {
 			
-			//Destroy (gameObject);
-			GetComponent<IMonster>().monsterHealth = 0;
-			GameController.canonHealth -= GameController.damage; 
+			GetComponent<IMonster>().Death();
+			GameController.Instance.canonHealth -= GameController.Instance.damage; 
 
 		}
 	}

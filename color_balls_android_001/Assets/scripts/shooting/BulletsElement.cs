@@ -35,7 +35,6 @@ public class BulletsElement : MonoBehaviour, IBulletsElement {
 
 		if (_pool != null)
 		{
-			Debug.Log("putItem");
 			_pool.PutItem(this);
 		}
 	}
@@ -80,7 +79,6 @@ public class BulletsElement : MonoBehaviour, IBulletsElement {
 
 			if (rbExp != null) {
 				//rbExp.AddForce ();
-				Debug.Log ("Booom");
 
 				if (OnBang != null) {
 					OnBang (col, colorBall);

@@ -11,8 +11,6 @@ public class ShootController : MonoBehaviour {
 	[SerializeField]
 	private BulletsPool pool;
 
-	private float dps = -1;
-
 	private Vector3 mousePosition;
 	private Vector3 directionRay;
 	private Vector3 position;
@@ -26,10 +24,10 @@ public class ShootController : MonoBehaviour {
 	public void Update()
 	{
 
-		if(Input.GetMouseButtonDown (0) && GameController.alive && !EventSystem.current.IsPointerOverGameObject()){
-			if (dps < 0)
-			{
+		if(Input.GetMouseButtonDown (0) && GameController.Instance.playerAlive && !EventSystem.current.IsPointerOverGameObject()){
 				ActivateBall ();
+
+			AudioManager.Instance.PlaySoundInternal ("boom1", true);
 
 				RaycastHit hit;
 				Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -42,21 +40,10 @@ public class ShootController : MonoBehaviour {
 					element.AddForce (directionRay, forceSpeed, thirtyFive);
 				}
 			}
-			else
-			{
-				dps -= Time.fixedDeltaTime;
-			}
-
-		}
-		else
-		{
-			dps = -1;
-		}
 	}
 
 	void ActivateBall()
 	{
-		dps = 0.1f;
 		element = pool.GetElement();                
 		element.SetPosition(emitter.position);
 		element.Activate();

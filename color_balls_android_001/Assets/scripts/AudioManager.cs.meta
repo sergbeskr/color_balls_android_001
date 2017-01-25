@@ -1,10 +1,12 @@
 fileFormatVersion: 2
 guid: d89642177a35c414d93480f9d835b8cd
-timeCreated: 1483611364
+timeCreated: 1485253446
 licenseType: Free
 MonoImporter:
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - soundPrefab: {fileID: 1000012066793324, guid: d77c7b7d45964454d88a09c9216bd445,
+      type: 2}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

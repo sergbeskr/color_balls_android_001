@@ -7,8 +7,9 @@ public class AudioManager : MonoBehaviour {
 	private static AudioManager _instance;
 
 	string currentMusicName;
-	public GameObject soundPrefab;
-	//List<AMSound> _sounds = new List<AMSound>();
+
+	private GameObject soundPrefab;
+	//List<AudioClip> _sounds = new List<AudioClip>();
 
 	#region Singleton
 
@@ -38,6 +39,7 @@ public class AudioManager : MonoBehaviour {
 
 		_instance = this;
 		DontDestroyOnLoad(gameObject);
+
 	}
 
 	#endregion
@@ -81,9 +83,9 @@ public class AudioManager : MonoBehaviour {
 
 	#endregion
 
-	/*#region Sound
+	#region Sound
 
-	void PlaySoundInternal(string soundName, bool pausable)
+	public void PlaySoundInternal(string soundName, bool pausable)
 	{
 		if (string.IsNullOrEmpty(soundName)) {
 			Debug.Log("Sound null or empty");
@@ -92,9 +94,9 @@ public class AudioManager : MonoBehaviour {
 
 		int sameCount = 0; // duplicates
 
-		foreach (AudioSource audioSource in _sounds)
+		/*foreach (AudioClip audioClip in _sounds)
 		{
-			if (audioSource.clip.name == soundName)
+			if (audioClip.name == soundName)
 				sameCount++;
 		}
 
@@ -107,44 +109,48 @@ public class AudioManager : MonoBehaviour {
 		if (_sounds.Count > 6) {
 			Debug.Log("Too much sounds");
 			return;
-		}
+		}*/
+		Debug.Log ("click");
 
 		StartCoroutine(PlaySoundInternalSoon(soundName, pausable));
 	}
 
 
 	IEnumerator PlaySoundInternalSoon(string soundName, bool pausable)
-	{
-		AMSound sound = new AMSound();
-
+	{		
 		ResourceRequest request = LoadClipAsync("Sounds/" + soundName);
 
 		while (!request.isDone)
 		{
 			yield return null;
 		}
-
 		AudioClip soundClip = (AudioClip)request.asset;
+
 		if (soundClip == null)
 		{
 			Debug.Log("Sound not loaded: " + soundName);
 		}
 
-		GameObject soundGObj = (GameObject)Instantiate(soundPrefab);
+
+		//soundPrefab = Resources.Load ("AudioManager/sound") as GameObject;
+		//GameObject soundGObj = Instantiate(soundPrefab) as GameObject;
+		GameObject soundGObj = new GameObject("Sound:" + soundName);
+		AudioSource soundSource = soundGObj.AddComponent<AudioSource>();
 		soundGObj.transform.parent = transform;
 
-		AudioSource soundSource = soundGObj.GetComponent<AudioSource>();
-		sound.Name = soundSource.name;
+		//AudioSource soundSource = soundGObj.GetComponent<AudioSource>();
 
 		//soundSource.volume
+		soundSource.playOnAwake = false;
+		soundSource.loop = false;
 		soundSource.clip = soundClip;
 		soundSource.Play();
 		soundSource.ignoreListenerPause = !pausable;
-
-		_sounds.Add(soundSource);
+		Destroy (soundGObj, soundSource.clip.length);
+		//_sounds.Add(soundSource.clip);
 	}
 
-	#endregion*/
+	#endregion
 
 	AudioClip LoadClip(string name)
 	{
@@ -155,7 +161,8 @@ public class AudioManager : MonoBehaviour {
 
 	ResourceRequest LoadClipAsync(string name)
 	{
-		string path = "SoundManager/" + name;
+		string path = "AudioManager/" + name;
+		Debug.Log ("Loading");
 		return Resources.LoadAsync<AudioClip>(path);
 	}
 
@@ -168,4 +175,23 @@ public class AudioManager : MonoBehaviour {
 	{
 		AudioListener.pause = false;
 	}
+
+	/*void Update()
+	{
+		// Destory only one sound per frame
+		AudioClip soundToDelete = null;
+
+		foreach (AudioClip sound in _sounds) {
+			if (IsSoundFinished (sound)) {
+				soundToDelete = sound;
+				break;
+			}
+		}
+
+		if (soundToDelete != null) {
+			soundToDelete.IsValid = false;
+			_sounds.Remove (soundToDelete);
+			Destroy (soundToDelete.Source.gameObject);
+		}
+	}*/
 }
