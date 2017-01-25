@@ -7,9 +7,9 @@ public class Health : MonoBehaviour {
 	void Update () {
 
 		// death
-		if (GameController.Instance.canonHealth <= 0) {
-			GameController.Instance.canonHealth = 0;
-			GameController.Instance.playerAlive = false;
+		if (GameController.canonHealth <= 0) {
+			GameController.canonHealth = 0;
+			GameController.playerAlive = false;
 		}
 
 	}

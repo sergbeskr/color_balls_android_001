@@ -4,14 +4,14 @@ using System.Collections.Generic;
 public class GameController : MonoBehaviour {
 
 	public GameObject spawnerMonstersPref;
-	public float damage = 25;
-	public int number = 10;
-	public bool playerAlive = true; // move to cannon
-	public float canonHealth = 100;
-	public float maxMonsterHealth = 50;
-	public float spawnMonstersRadius = 5;
+	public static float damage = 25;
+	public static int number = 10;
+	public static bool playerAlive = true; 
+	public static float canonHealth = 100;
+	public static float maxMonsterHealth = 50;
+	public static float spawnMonstersRadius = 5;
 
-	public Dictionary<string, Color> colors = new Dictionary<string, Color> () {
+	public static Dictionary<string, Color> colors = new Dictionary<string, Color> () {
 		{"red", Color.red},
 		{"yellow", Color.yellow},
 		{"green", Color.green},
@@ -19,11 +19,9 @@ public class GameController : MonoBehaviour {
 		{"magenta", Color.magenta},
 	};
 
-	private static GameController _instance;
+	//private static GameController _instance;
 
-	public bool pause { get; set;}
-
-	#region Singleton
+/*	#region Singleton
 
 	private GameController()
 	{
@@ -38,25 +36,24 @@ public class GameController : MonoBehaviour {
 
 			return new GameObject ("(singleton)GameController").AddComponent<GameController> ();
 		}
-	}
+	}*/
 
 	void Awake()
 	{
-		if (_instance != null)
+		/*if (_instance != null)
 		{
 			Destroy(gameObject);
 			return;
 		}
 
-		_instance = this;
+		_instance = this;*/
 		DontDestroyOnLoad(gameObject);
 	}
 
-	#endregion
+	//#endregion
 
 	void Start () {
-		spawnerSpawn ();
-		pause = false;
+			spawnerSpawn ();
 	}
 
 	void spawnerSpawn()
