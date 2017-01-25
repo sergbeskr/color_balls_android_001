@@ -16,25 +16,25 @@ public class SpawnerMonsters : MonoBehaviour {
 
 	void SpawningMonsters()
 	{
-		if (GameController.number == 0 || !GameController.alive) {
+		if (GameController.Instance.number == 0 || !GameController.Instance.playerAlive) {
 			CancelInvoke ("spawningMonsters");
 		}
 
 		// Position spawn
-		Vector3 pos = new Vector3 (Random.Range (gameObject.transform.position.x - GameController.spawnMonstersRadius, 
-													gameObject.transform.position.x + GameController.spawnMonstersRadius), // random x
-													3, 
-													Random.Range (gameObject.transform.position.z - GameController.spawnMonstersRadius, // random y
-													gameObject.transform.position.z + GameController.spawnMonstersRadius));
+		Vector3 pos = new Vector3 (Random.Range (gameObject.transform.position.x - GameController.Instance.spawnMonstersRadius, 
+												 gameObject.transform.position.x + GameController.Instance.spawnMonstersRadius), // random x
+												 3, 
+												 Random.Range (gameObject.transform.position.z - GameController.Instance.spawnMonstersRadius, // random y
+												 gameObject.transform.position.z + GameController.Instance.spawnMonstersRadius));
 		
 		GameObject go = Instantiate (monstersPref, pos, Quaternion.identity) as GameObject;
 
 		//Random color
 		IMonster monster = go.GetComponent<IMonster> ();
 		int c = Random.Range (0, 5);
-		monster.SetColor (GameController.colors[colors[c]]);
+		monster.SetColor (GameController.Instance.colors[colors[c]]);
 
-		GameController.number--;
+		GameController.Instance.number--;
 
 	}
 }

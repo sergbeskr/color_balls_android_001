@@ -14,7 +14,7 @@ public class BulletsPool : MonoBehaviour, IBulletsPool {
 		_pool = new Stack<IBulletsElement>();
 		UIController.OnChangeColor += ChangeColor;
 
-		currColor = GameController.colors ["red"];
+		currColor = GameController.Instance.colors ["red"];
 	}
 
 	public IBulletsElement GetElement()
@@ -50,6 +50,6 @@ public class BulletsPool : MonoBehaviour, IBulletsPool {
 	void ChangeColor(string btnColor)
 	{
 		Debug.Log (btnColor);
-		currColor = GameController.colors[btnColor];
+		currColor = GameController.Instance.colors[btnColor];
 	}
 }

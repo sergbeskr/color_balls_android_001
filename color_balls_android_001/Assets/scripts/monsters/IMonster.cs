@@ -7,6 +7,6 @@ public interface IMonster {
 	Color monsterColor{ get; set;}
 
 	void Hit (Collider c, Color ballColor);
-	//void Death ();
+	void Death ();
 	void SetColor(Color color);
 }
