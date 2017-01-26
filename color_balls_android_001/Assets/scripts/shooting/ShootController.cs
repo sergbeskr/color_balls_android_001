@@ -16,7 +16,8 @@ public class ShootController : MonoBehaviour {
 	private Vector3 position;
 	private float distance;
 	private float forceSpeed = 50;
-	private float thirtyFive = 15;
+	private float thirtyFive = 35;
+	private float sergAngle;
 
 	IBulletsElement element;
 
@@ -35,10 +36,10 @@ public class ShootController : MonoBehaviour {
 					position = hit.point;
 					directionRay = emitter.TransformDirection (position - emitter.position);  
 					distance = Vector3.Distance(position, emitter.position);
-					//forceSpeed = Mathf.Sqrt ((distance * 9.8f) / (distance / thirtyFive));
-					forceSpeed = Mathf.Sqrt (9.8f * thirtyFive);
-					//Debug.Log("___"+distance/thirtyFive);
-					forceSpeed = forceSpeed*2.33f;
+					sergAngle = Mathf.Atan(thirtyFive / Mathf.Sqrt(directionRay.x * directionRay.x + directionRay.z * directionRay.z));
+					Debug.Log("1010010101010010101 "+sergAngle);
+					forceSpeed = Mathf.Sqrt((distance * 9.8f) / Mathf.Sin(2*sergAngle));
+					//forceSpeed = Mathf.Sqrt (9.8f * thirtyFive);
 					element.AddForce (directionRay, forceSpeed, thirtyFive);
 					Debug.Log("___"+distance+"___"+thirtyFive+"___"+forceSpeed+"___"+directionRay);
 				}
