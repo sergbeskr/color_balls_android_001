@@ -30,7 +30,6 @@ public class BulletsElement : MonoBehaviour, IBulletsElement {
 	{
 		gameObject.SetActive(false);
 
-
 		if (_pool != null)
 		{
 			_pool.PutItem(this);
@@ -68,22 +67,13 @@ public class BulletsElement : MonoBehaviour, IBulletsElement {
 
 	void Explosion()
 	{
-		Rigidbody rbExp;
 		rb.Sleep ();
 		explosion.Play();
 
 		foreach (Collider col in Physics.OverlapSphere(transform.position, radiusExp, 1<<8)) {
-			rbExp = col.GetComponent<Rigidbody> ();
-
-			if (rbExp != null) {
-				//rbExp.AddForce ();
-
 				if (OnBang != null) {
 					OnBang (col, colorBall);
 				}
-
-				//Destroy (col.gameObject); /////////////////////////////////////////////////////////////////////////////
-			}
 		}
 	}
 
@@ -98,5 +88,10 @@ public class BulletsElement : MonoBehaviour, IBulletsElement {
 		Renderer rend = sphere.GetComponent<Renderer> ();
 		rend.material.color = m_color;
 		colorBall = m_color;
+	}
+
+	void OnDestroy()
+	{
+		OnBang = null;
 	}
 }

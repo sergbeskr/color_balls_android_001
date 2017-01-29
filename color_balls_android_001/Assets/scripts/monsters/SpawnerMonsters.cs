@@ -16,8 +16,6 @@ public class SpawnerMonsters : MonoBehaviour {
 
 	void SpawningMonsters()
 	{
-		if (UIController.isStarted) 
-		{
 			if (GameController.number == 0 || !GameController.playerAlive) {
 				CancelInvoke ("SpawningMonsters");
 			}
@@ -38,6 +36,4 @@ public class SpawnerMonsters : MonoBehaviour {
 			monster.SetColor (GameController.colors [colors [c]]);
 			GameController.number--;
 		}
-
-	}
 }

@@ -3,24 +3,18 @@ using System.Collections;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
+using System;
 
 public class UIController : MonoBehaviour {
 
 	[SerializeField] 
-	private Slider sliderHealth; 
-	[SerializeField] 
-	private Canvas gameCanvas;
+	private Slider sliderHealth, musicVolumeSlider, soundVolumeSlider; 
 
 	[SerializeField]
-	private GameObject gameUI;
+	private GameObject gameOver, audioSettings, gamePause, gameUI;
+
 	[SerializeField]
-	private GameObject gamePause;
-	[SerializeField]
-	private GameObject audioSettings;
-	[SerializeField]
-	private GameObject gameOver;
-	[SerializeField]
-	private GameObject gameStart;
+	private Toggle muteMusic, muteSounds;
 
 	public delegate void OnChangeColorMethod (string btnColor);
 
@@ -31,7 +25,7 @@ public class UIController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		AudioManager.PlayMusic ("Startsong");
+		AudioManager.PlayMusic("Level1");
 	}
 	
 	// Update is called once per frame
@@ -50,14 +44,6 @@ public class UIController : MonoBehaviour {
 		if (OnChangeColor != null) {
 			OnChangeColor (btnColorName);
 		}
-	}
-
-	public void OnStartGameClick()
-	{
-		gameStart.SetActive (false);// panel start dont active
-		gameUI.SetActive (true);
-		AudioManager.PlayMusic("Level1");
-		isStarted = true;
 	}
 
 	public void OnPauseClick()
@@ -83,12 +69,30 @@ public class UIController : MonoBehaviour {
 	{
 		gamePause.SetActive (false);
 		audioSettings.SetActive (true);
+
+		if (PlayerPrefs.HasKey ("MusicVolume")) {
+			musicVolumeSlider.value = PlayerPrefs.GetFloat ("MusicVolume");
+		}
+		if (PlayerPrefs.HasKey ("SoundVolume")) {
+			soundVolumeSlider.value = PlayerPrefs.GetFloat ("SoundVolume");
+		}
+		if (PlayerPrefs.HasKey ("MusicMute")) {
+			muteMusic.isOn = !Convert.ToBoolean (PlayerPrefs.GetInt ("MusicMute"));
+		}
+		if (PlayerPrefs.HasKey ("SoundsMute")) {
+			muteSounds.isOn = !Convert.ToBoolean (PlayerPrefs.GetInt ("SoundsMute"));
+		}
 	}
 
 	public void OnRestart()
 	{
-		int scene = SceneManager.GetActiveScene().buildIndex;
-		SceneManager.LoadScene(scene, LoadSceneMode.Single);
+		SceneManager.LoadScene ("scene_001");
+	}
+		
+	public void OnBackToMenu()
+	{
+		EventSystem.current.currentSelectedGameObject.transform.parent.gameObject.SetActive (false);// set current panel false
+		gamePause.SetActive(true);
 	}
 		
 }

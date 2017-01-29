@@ -46,8 +46,8 @@ public class AudioManager : MonoBehaviour {
 	public float fadeSpeed = 3; 
 
 	private static AudioSource last, current;
-	private static float musicVolume, soundVolume;
-	private static bool muteMusic, muteSound;
+	public static float musicVolume, soundVolume;
+	public static bool muteMusic, muteSound;
 
 	public static void SoundVolume(float volume)
 	{

@@ -35,6 +35,7 @@ public class GameController : MonoBehaviour {
 		spawnMonstersRadius = 5;
 	}
 
+
 	void spawnerSpawn()
 	{
 		//for (int i = 1; i <= number;  i++) {
