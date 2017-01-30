@@ -1,24 +1,40 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
 
 public class GameController : MonoBehaviour {
 
 	public GameObject spawnerMonstersPref;
-	public static float damage = 25;
-	public static int number = 10;
-	public static bool alive = true;
-	public static float canonHealth = 100;
+	public static float damage;
+	public static int number;
+	public static bool playerAlive; 
+	public static float canonHealth;
+	public static float maxMonsterHealth;
+	public static float spawnMonstersRadius;
 
-	// Use this for initialization
+	public static Dictionary<string, Color> colors = new Dictionary<string, Color> () {
+		{"red", Color.red},
+		{"yellow", Color.yellow},
+		{"green", Color.green},
+		{"blue", Color.blue},
+		{"magenta", Color.magenta},
+	};
+		
+
 	void Start () {
+		Init ();
 		spawnerSpawn ();
-		//////GameObject temp = new GameObject ("temp", new System.Type[]{typeof (CapsuleCollider)});// with params
 	}
-	
-	// Update is called once per frame
-	void Update () {
-	
+
+	void Init()
+	{
+		damage = 25;
+		number = 10;
+		playerAlive = true;
+		canonHealth = 100;
+		maxMonsterHealth = 50;
+		spawnMonstersRadius = 5;
 	}
+
 
 	void spawnerSpawn()
 	{
@@ -28,4 +44,5 @@ public class GameController : MonoBehaviour {
 		Instantiate (spawnerMonstersPref, pos, Quaternion.identity);
 		//}
 	}
+		
 }
