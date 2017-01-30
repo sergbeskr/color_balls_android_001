@@ -15,6 +15,7 @@ public class Monster : MonoBehaviour, IMonster {
 	public void Death ()
 	{
 		BulletsElement.OnBang -= Hit;
+		GameController.killedMonsters++;
 		Destroy (gameObject);
 	}
 

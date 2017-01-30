@@ -16,6 +16,12 @@ public class UIController : MonoBehaviour {
 	[SerializeField]
 	private Toggle muteMusic, muteSounds;
 
+	[SerializeField]
+	private GameObject[] colorButtons;
+
+	[SerializeField]
+	private Text killedText;
+
 	public delegate void OnChangeColorMethod (string btnColor);
 
 	public static event OnChangeColorMethod OnChangeColor;
@@ -30,8 +36,44 @@ public class UIController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+
+		killedText.text = GameController.killedMonsters.ToString();
+
 		sliderHealth.value = GameController.canonHealth;
 		if (!GameController.playerAlive) {
+			gameUI.SetActive (false);
+			gameOver.SetActive (true);
+		}
+
+		// on click key number, temp
+		if (Input.GetKey ("1")) {
+			if (OnChangeColor != null) {
+				OnChangeColor ("red");
+			}
+		}
+		if (Input.GetKey ("2")) {
+			if (OnChangeColor != null) {
+				OnChangeColor ("yellow");
+			}
+		}
+		if (Input.GetKey ("3")) {
+			if (OnChangeColor != null) {
+				OnChangeColor ("green");
+			}
+		}
+		if (Input.GetKey ("4")) {
+			if (OnChangeColor != null) {
+				OnChangeColor ("blue");
+			}
+		}
+		if (Input.GetKey ("5")) {
+			if (OnChangeColor != null) {
+				OnChangeColor ("magenta");
+			}
+		}
+
+		// temp
+		if (GameController.win) {
 			gameUI.SetActive (false);
 			gameOver.SetActive (true);
 		}
@@ -39,7 +81,6 @@ public class UIController : MonoBehaviour {
 
 	public void OnClikcColorButton()
 	{
-		Debug.Log ("Click");
 		string btnColorName = EventSystem.current.currentSelectedGameObject.name;
 		if (OnChangeColor != null) {
 			OnChangeColor (btnColorName);
@@ -95,4 +136,5 @@ public class UIController : MonoBehaviour {
 		gamePause.SetActive(true);
 	}
 		
+	
 }

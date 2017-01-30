@@ -6,10 +6,13 @@ public class GameController : MonoBehaviour {
 	public GameObject spawnerMonstersPref;
 	public static float damage;
 	public static int number;
+	public static int startNumber;
 	public static bool playerAlive; 
 	public static float canonHealth;
 	public static float maxMonsterHealth;
 	public static float spawnMonstersRadius;
+	public static int killedMonsters;
+	public static bool win;
 
 	public static Dictionary<string, Color> colors = new Dictionary<string, Color> () {
 		{"red", Color.red},
@@ -25,14 +28,24 @@ public class GameController : MonoBehaviour {
 		spawnerSpawn ();
 	}
 
+	void Update()
+	{
+		if (killedMonsters == startNumber) {
+			win = true;
+		}
+	}
+
 	void Init()
 	{
 		damage = 25;
-		number = 10;
+		startNumber = 10;
+		number = startNumber;
 		playerAlive = true;
 		canonHealth = 100;
 		maxMonsterHealth = 50;
 		spawnMonstersRadius = 5;
+		killedMonsters = 0;
+		win = false;
 	}
 
 
