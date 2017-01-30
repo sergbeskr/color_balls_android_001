@@ -16,7 +16,7 @@ public class ShootController : MonoBehaviour {
 	private Vector3 position;
 	private float distance;
 	private float forceSpeed = 50;
-	private float thirtyFive = 15;
+	private float m_height = 15;
 
 	IBulletsElement element;
 
@@ -29,18 +29,22 @@ public class ShootController : MonoBehaviour {
 
 				AudioManager.PlaySound ("boom1");
 
+				//SergBeskr code
+
 				RaycastHit hit;
 				Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
 				if (Physics.Raycast (ray, out hit, Mathf.Infinity)) {
 					position = hit.point;
 					directionRay = emitter.TransformDirection (position - emitter.position);  
 					distance = Vector3.Distance(position, emitter.position);
-					//forceSpeed = Mathf.Sqrt ((distance * 9.8f) / (distance / thirtyFive));
-					forceSpeed = Mathf.Sqrt (9.8f * thirtyFive);
-					//Debug.Log("___"+distance/thirtyFive);
+					//forceSpeed = Mathf.Sqrt ((distance * 9.8f) / (distance /  m_height));
+					forceSpeed = Mathf.Sqrt (9.8f * m_height);
+					//Debug.Log("___"+distance/ m_height);
 					forceSpeed = forceSpeed*2.33f;
-					element.AddForce (directionRay, forceSpeed, thirtyFive);
-					Debug.Log("___"+distance+"___"+thirtyFive+"___"+forceSpeed+"___"+directionRay);
+					element.AddForce (directionRay, forceSpeed, m_height);
+					Debug.Log("___"+distance+"___"+m_height+"___"+forceSpeed+"___"+directionRay);
+
+				//
 				}
 			}
 		}
