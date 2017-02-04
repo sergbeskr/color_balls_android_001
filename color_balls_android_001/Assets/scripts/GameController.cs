@@ -13,6 +13,7 @@ public class GameController : MonoBehaviour {
 	public static float spawnMonstersRadius;
 	public static int killedMonsters;
 	public static bool win;
+	public Camera camera1, camera2;
 
 	public static Dictionary<string, Color> colors = new Dictionary<string, Color> () {
 		{"red", Color.red},
@@ -25,12 +26,22 @@ public class GameController : MonoBehaviour {
 
 	void Start () {
 		Init ();
+		if (PlayerPrefs.HasKey ("Camera")) {
+			int c = PlayerPrefs.GetInt ("Camera");
+			if (c == 1) {
+				camera2.gameObject.SetActive (false);
+				camera1.gameObject.SetActive (true);
+			} else {
+				camera1.gameObject.SetActive (false);
+				camera2.gameObject.SetActive (true);
+			}
+		}
 		spawnerSpawn ();
 	}
 
 	void Update()
 	{
-		if (killedMonsters == startNumber) {
+		if (playerAlive && killedMonsters == startNumber) {
 			win = true;
 		}
 	}

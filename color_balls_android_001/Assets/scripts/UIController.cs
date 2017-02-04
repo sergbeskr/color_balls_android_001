@@ -11,7 +11,7 @@ public class UIController : MonoBehaviour {
 	private Slider sliderHealth, musicVolumeSlider, soundVolumeSlider; 
 
 	[SerializeField]
-	private GameObject gameOver, audioSettings, gamePause, gameUI;
+	private GameObject gameOver, audioSettings, gamePause, gameUI, videoSettings, win;
 
 	[SerializeField]
 	private Toggle muteMusic, muteSounds;
@@ -75,7 +75,7 @@ public class UIController : MonoBehaviour {
 		// temp
 		if (GameController.win) {
 			gameUI.SetActive (false);
-			gameOver.SetActive (true);
+			win.SetActive (true);
 		}
 	}
 
@@ -135,6 +135,10 @@ public class UIController : MonoBehaviour {
 		EventSystem.current.currentSelectedGameObject.transform.parent.gameObject.SetActive (false);// set current panel false
 		gamePause.SetActive(true);
 	}
-		
-	
+
+	public void OnVideoSettings()
+	{
+		gamePause.SetActive (false);
+		videoSettings.SetActive (true);
+	}
 }

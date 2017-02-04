@@ -1,0 +1,52 @@
+Initialize engine version: 5.4.3f1 (01f4c123905a)
+GfxDevice: creating device client; threaded=1
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.0]
+    Renderer: AMD Radeon(TM) R4 Graphics (ID=0x9851)
+    Vendor:   ATI
+    VRAM:     754 MB
+Begin MonoManager ReloadAssembly
+Platform assembly: D:\sergbeskr\unity3d\color_balls_android_001\color_balls_android_001\color_balls_Data\Managed\UnityEngine.dll (this message is harmless)
+Loading D:\sergbeskr\unity3d\color_balls_android_001\color_balls_android_001\color_balls_Data\Managed\UnityEngine.dll into Unity Child Domain
+Platform assembly: D:\sergbeskr\unity3d\color_balls_android_001\color_balls_android_001\color_balls_Data\Managed\Assembly-CSharp.dll (this message is harmless)
+Loading D:\sergbeskr\unity3d\color_balls_android_001\color_balls_android_001\color_balls_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
+Platform assembly: D:\sergbeskr\unity3d\color_balls_android_001\color_balls_android_001\color_balls_Data\Managed\UnityEngine.UI.dll (this message is harmless)
+Loading D:\sergbeskr\unity3d\color_balls_android_001\color_balls_android_001\color_balls_Data\Managed\UnityEngine.UI.dll into Unity Child Domain
+Platform assembly: D:\sergbeskr\unity3d\color_balls_android_001\color_balls_android_001\color_balls_Data\Managed\UnityEngine.Networking.dll (this message is harmless)
+Loading D:\sergbeskr\unity3d\color_balls_android_001\color_balls_android_001\color_balls_Data\Managed\UnityEngine.Networking.dll into Unity Child Domain
+- Completed reload, in  0.098 seconds
+Platform assembly: D:\sergbeskr\unity3d\color_balls_android_001\color_balls_android_001\color_balls_Data\Managed\System.Core.dll (this message is harmless)
+Platform assembly: D:\sergbeskr\unity3d\color_balls_android_001\color_balls_android_001\color_balls_Data\Managed\System.dll (this message is harmless)
+desktop: 1366x768 60Hz; virtual: 1366x768 at 0,0
+<RI> Initializing input.
+<RI> Input initialized.
+<RI> Initialized touch support.
+UnloadTime: 2.313932 ms
+Setting up 1 worker threads for Enlighten.
+  Thread -> id: 148c -> priority: 1 
+Unloading 6 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 13.075426 ms
+
+Unloading 11 unused Assets to reduce memory usage. Loaded Objects now: 709.
+Total: 1.729179 ms (FindLiveObjects: 0.206886 ms CreateObjectMapping: 0.031916 ms MarkObjects: 1.013342 ms  DeleteObjects: 0.474755 ms)
+
+___10.06388___15___28.24975___(-4.1, -1.2, 9.1)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 42)
+
+___9.994897___15___28.24975___(-7.3, -1.1, 6.8)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 42)
+
+___7.592083___15___28.24975___(-6.7, -0.8, 3.5)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 42)
+
+___8.377427___15___28.24975___(-4.0, -1.2, 7.3)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 42)
+
+___10.05593___15___28.24975___(-7.3, -1.1, 6.8)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 42)
+

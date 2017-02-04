@@ -20,7 +20,7 @@ public class SpawnerMonsters : MonoBehaviour {
 				CancelInvoke ("SpawningMonsters");
 			}
 
-			GameController.number--;
+			GameController.number--; // to event
 			// Position spawn
 			Vector3 pos = new Vector3 (Random.Range (gameObject.transform.position.x - GameController.spawnMonstersRadius, 
 				             gameObject.transform.position.x + GameController.spawnMonstersRadius), // random x

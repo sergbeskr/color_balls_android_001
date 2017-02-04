@@ -16,7 +16,7 @@ public class Monster : MonoBehaviour, IMonster {
 	{
 		BulletsElement.OnBang -= Hit;
 		GameController.killedMonsters++;
-		Destroy (gameObject);
+		gameObject.SetActive(false);
 	}
 
 	public void Hit(Collider c, Color ballColor)
