@@ -16,27 +16,39 @@ public class ShootController : MonoBehaviour {
 	private Vector3 position;
 	private float distance;
 	private float forceSpeed = 50;
+	private float m_height = 15;
 
 	IBulletsElement element;
+	public float fireRate = 1.0f;
+	private float lastShot = 0.0f;
+	private float dps = -1;
 
-
-	public void Update()
+	public void FixedUpdate()
 	{
-		if (!UIController.isPause) {
-			if (Input.GetMouseButtonDown (0) && GameController.playerAlive && !EventSystem.current.IsPointerOverGameObject ()) {
-				ActivateBall ();
+		if (Time.time > fireRate + lastShot) {
+			if (!UIController.isPause) {
+				if (Input.GetMouseButtonDown (0) && GameController.playerAlive && !EventSystem.current.IsPointerOverGameObject ()) {
+					ActivateBall ();
 
-				AudioManager.PlaySound ("boom1");
+					AudioManager.PlaySound ("boom1");
 
-				RaycastHit hit;
-				Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
-				if (Physics.Raycast (ray, out hit, Mathf.Infinity)) {
-					position = hit.point;
-					directionRay = emitter.TransformDirection (position - emitter.position);  
-					distance = Vector3.Distance (position, emitter.position);
-					forceSpeed = Mathf.Sqrt ((distance * 9.8f) / (distance / 35f));
+					//SergBeskr code
 
-					element.AddForce (directionRay, forceSpeed);
+					RaycastHit hit;
+					Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
+					if (Physics.Raycast (ray, out hit, Mathf.Infinity)) {
+						position = hit.point;
+						directionRay = emitter.TransformDirection (position - emitter.position);  
+						distance = Vector3.Distance (position, emitter.position);
+						//forceSpeed = Mathf.Sqrt ((distance * 9.8f) / (distance /  m_height));
+						forceSpeed = Mathf.Sqrt (9.8f * m_height);
+						//Debug.Log("___"+distance/ m_height);
+						forceSpeed = forceSpeed * 2.33f;
+						element.AddForce (directionRay, forceSpeed, m_height);
+						Debug.Log ("___" + distance + "___" + m_height + "___" + forceSpeed + "___" + directionRay);
+						lastShot = Time.time;
+						//
+					}
 				}
 			}
 		}

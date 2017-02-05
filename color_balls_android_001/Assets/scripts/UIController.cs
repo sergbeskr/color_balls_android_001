@@ -11,10 +11,16 @@ public class UIController : MonoBehaviour {
 	private Slider sliderHealth, musicVolumeSlider, soundVolumeSlider; 
 
 	[SerializeField]
-	private GameObject gameOver, audioSettings, gamePause, gameUI;
+	private GameObject gameOver, audioSettings, gamePause, gameUI, videoSettings, win;
 
 	[SerializeField]
 	private Toggle muteMusic, muteSounds;
+
+	[SerializeField]
+	private GameObject[] colorButtons;
+
+	[SerializeField]
+	private Text killedText;
 
 	public delegate void OnChangeColorMethod (string btnColor);
 
@@ -30,16 +36,51 @@ public class UIController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+
+		killedText.text = GameController.killedMonsters.ToString();
+
 		sliderHealth.value = GameController.canonHealth;
 		if (!GameController.playerAlive) {
 			gameUI.SetActive (false);
 			gameOver.SetActive (true);
 		}
+
+		// on click key number, temp
+		if (Input.GetKey ("1")) {
+			if (OnChangeColor != null) {
+				OnChangeColor ("red");
+			}
+		}
+		if (Input.GetKey ("2")) {
+			if (OnChangeColor != null) {
+				OnChangeColor ("yellow");
+			}
+		}
+		if (Input.GetKey ("3")) {
+			if (OnChangeColor != null) {
+				OnChangeColor ("green");
+			}
+		}
+		if (Input.GetKey ("4")) {
+			if (OnChangeColor != null) {
+				OnChangeColor ("blue");
+			}
+		}
+		if (Input.GetKey ("5")) {
+			if (OnChangeColor != null) {
+				OnChangeColor ("magenta");
+			}
+		}
+
+		// temp
+		if (GameController.win) {
+			gameUI.SetActive (false);
+			win.SetActive (true);
+		}
 	}
 
 	public void OnClikcColorButton()
 	{
-		Debug.Log ("Click");
 		string btnColorName = EventSystem.current.currentSelectedGameObject.name;
 		if (OnChangeColor != null) {
 			OnChangeColor (btnColorName);
@@ -94,5 +135,10 @@ public class UIController : MonoBehaviour {
 		EventSystem.current.currentSelectedGameObject.transform.parent.gameObject.SetActive (false);// set current panel false
 		gamePause.SetActive(true);
 	}
-		
+
+	public void OnVideoSettings()
+	{
+		gamePause.SetActive (false);
+		videoSettings.SetActive (true);
+	}
 }

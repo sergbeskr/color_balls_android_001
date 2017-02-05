@@ -49,7 +49,6 @@ public class BulletsPool : MonoBehaviour, IBulletsPool {
 
 	void ChangeColor(string btnColor)
 	{
-		Debug.Log (btnColor);
 		currColor = GameController.colors[btnColor];
 	}
 }

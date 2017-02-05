@@ -6,10 +6,14 @@ public class GameController : MonoBehaviour {
 	public GameObject spawnerMonstersPref;
 	public static float damage;
 	public static int number;
+	public static int startNumber;
 	public static bool playerAlive; 
 	public static float canonHealth;
 	public static float maxMonsterHealth;
 	public static float spawnMonstersRadius;
+	public static int killedMonsters;
+	public static bool win;
+	public Camera camera1, camera2;
 
 	public static Dictionary<string, Color> colors = new Dictionary<string, Color> () {
 		{"red", Color.red},
@@ -22,17 +26,37 @@ public class GameController : MonoBehaviour {
 
 	void Start () {
 		Init ();
+		if (PlayerPrefs.HasKey ("Camera")) {
+			int c = PlayerPrefs.GetInt ("Camera");
+			if (c == 1) {
+				camera2.gameObject.SetActive (false);
+				camera1.gameObject.SetActive (true);
+			} else {
+				camera1.gameObject.SetActive (false);
+				camera2.gameObject.SetActive (true);
+			}
+		}
 		spawnerSpawn ();
+	}
+
+	void Update()
+	{
+		if (playerAlive && killedMonsters == startNumber) {
+			win = true;
+		}
 	}
 
 	void Init()
 	{
 		damage = 25;
-		number = 10;
+		startNumber = 10;
+		number = startNumber;
 		playerAlive = true;
 		canonHealth = 100;
 		maxMonsterHealth = 50;
 		spawnMonstersRadius = 5;
+		killedMonsters = 0;
+		win = false;
 	}
 
 

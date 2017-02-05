@@ -5,12 +5,14 @@ public class BulletsElement : MonoBehaviour, IBulletsElement {
 
 	private IBulletsPool _pool;
 	private Rigidbody rb;
-	private Transform sphere;
 
+	[SerializeField]
+	private Transform sphere, torus, cylinder;
+	[SerializeField]
+	private ParticleSystem explosion;
 	[SerializeField]
 	private float radiusExp = 10f;
 
-	private ParticleSystem explosion;
 
 	public Color colorBall { get; set; }
 
@@ -21,9 +23,6 @@ public class BulletsElement : MonoBehaviour, IBulletsElement {
 	// Use this for initialization
 	void Awake () {
 		rb = GetComponent<Rigidbody>();
-
-		sphere = transform.FindChild ("Sphere");
-		explosion = transform.FindChild ("ExplosionParticles").GetComponent<ParticleSystem> ();
 	}
 
 	public void Dispose()
@@ -60,9 +59,9 @@ public class BulletsElement : MonoBehaviour, IBulletsElement {
 		transform.position = position;
 	}
 
-	public void AddForce(Vector3 direction, float speed)
+	public void AddForce(Vector3 direction, float speed, float m_height)
 	{
-		rb.AddForce(direction.x * speed, 35f * speed, direction.z * speed);
+		rb.AddForce(direction.x * speed, m_height * speed, direction.z * speed);
 	}
 
 	void Explosion()
