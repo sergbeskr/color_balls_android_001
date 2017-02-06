@@ -7,6 +7,5 @@ public interface IBulletsElement: IDisposable {
 	void SetPosition(Vector3 position);
 	void AddForce(Vector3 force, float speed, float m_height);
 	void SetPool(IBulletsPool pool);
-
 	void SetColor (Color m_color);
 }

@@ -3,17 +3,18 @@ using System.Collections.Generic;
 
 public class GameController : MonoBehaviour {
 
-	public GameObject spawnerMonstersPref;
+	[SerializeField]
+	private GameObject spawnerMonstersPref;
+	[SerializeField]
+	private Camera camera1, camera2;
+
 	public static float damage;
-	public static int number;
-	public static int startNumber;
 	public static bool playerAlive; 
 	public static float canonHealth;
 	public static float maxMonsterHealth;
 	public static float spawnMonstersRadius;
 	public static int killedMonsters;
 	public static bool win;
-	public Camera camera1, camera2;
 
 	public static Dictionary<string, Color> colors = new Dictionary<string, Color> () {
 		{"red", Color.red},
@@ -23,6 +24,11 @@ public class GameController : MonoBehaviour {
 		{"magenta", Color.magenta},
 	};
 		
+	private int curr_number;
+	private int startNumber;
+
+	public delegate void StopSpawn ();
+	public static event StopSpawn OnStopSpawn;
 
 	void Start () {
 		Init ();
@@ -36,7 +42,9 @@ public class GameController : MonoBehaviour {
 				camera2.gameObject.SetActive (true);
 			}
 		}
+
 		spawnerSpawn ();
+		SpawnerMonsters.OnSpawn += () => curr_number--;
 	}
 
 	void Update()
@@ -44,13 +52,18 @@ public class GameController : MonoBehaviour {
 		if (playerAlive && killedMonsters == startNumber) {
 			win = true;
 		}
+
+		if (OnStopSpawn != null && curr_number == 1) {
+			OnStopSpawn ();
+		}
+
 	}
 
 	void Init()
 	{
 		damage = 25;
 		startNumber = 10;
-		number = startNumber;
+		curr_number = startNumber;
 		playerAlive = true;
 		canonHealth = 100;
 		maxMonsterHealth = 50;
@@ -68,5 +81,6 @@ public class GameController : MonoBehaviour {
 		Instantiate (spawnerMonstersPref, pos, Quaternion.identity);
 		//}
 	}
+
 		
 }

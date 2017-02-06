@@ -5,14 +5,14 @@ public class BulletsElement : MonoBehaviour, IBulletsElement {
 
 	private IBulletsPool _pool;
 	private Rigidbody rb;
+	private Renderer[] rend;
 
 	[SerializeField]
-	private Transform sphere, torus, cylinder;
+	private Transform ball, sphere;
 	[SerializeField]
 	private ParticleSystem explosion;
 	[SerializeField]
 	private float radiusExp = 10f;
-
 
 	public Color colorBall { get; set; }
 
@@ -23,6 +23,7 @@ public class BulletsElement : MonoBehaviour, IBulletsElement {
 	// Use this for initialization
 	void Awake () {
 		rb = GetComponent<Rigidbody>();
+		rend = ball.GetComponentsInChildren<Renderer> ();
 	}
 
 	public void Dispose()
@@ -44,6 +45,12 @@ public class BulletsElement : MonoBehaviour, IBulletsElement {
 	{
 		gameObject.SetActive(true);
 		rb.WakeUp ();
+
+		foreach(Renderer r in rend)
+		{
+			r.enabled = true;
+		}
+
 		StartCoroutine(LifeTimeCoroutine(8f));
 	}
 
@@ -67,6 +74,12 @@ public class BulletsElement : MonoBehaviour, IBulletsElement {
 	void Explosion()
 	{
 		rb.Sleep ();
+
+		foreach(Renderer r in rend)
+		{
+			r.enabled = false;
+		}
+
 		explosion.Play();
 
 		foreach (Collider col in Physics.OverlapSphere(transform.position, radiusExp, 1<<8)) {

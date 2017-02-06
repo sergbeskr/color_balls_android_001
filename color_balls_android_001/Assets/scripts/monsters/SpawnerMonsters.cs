@@ -9,18 +9,28 @@ public class SpawnerMonsters : MonoBehaviour {
 
 	private string[] colors = { "red", "yellow", "green", "blue", "magenta" };
 
+	public delegate void Spawn ();
+	public static event Spawn OnSpawn;
+
+	private bool stop = false;
 	// Use this for initialization
 	void Start () {
+		GameController.OnStopSpawn += () => stop = true;
 		InvokeRepeating("SpawningMonsters", 1f, 3f);
 	}
 
 	void SpawningMonsters()
 	{
-			if (GameController.number == 1 || !GameController.playerAlive) {
+		Debug.Log ("stop " + stop);
+		if (stop || !GameController.playerAlive) {
 				CancelInvoke ("SpawningMonsters");
-			}
+		}
+			
+		if (OnSpawn != null) {
+			OnSpawn ();
+		}
 
-			GameController.number--; // to event
+			//GameController.curr_number--; // to event
 			// Position spawn
 			Vector3 pos = new Vector3 (Random.Range (gameObject.transform.position.x - GameController.spawnMonstersRadius, 
 				             gameObject.transform.position.x + GameController.spawnMonstersRadius), // random x
@@ -36,4 +46,9 @@ public class SpawnerMonsters : MonoBehaviour {
 			monster.SetColor (GameController.colors [colors [c]]);
 			
 		}
+
+	void OnDestroy()
+	{
+		OnSpawn = null;
+	}
 }

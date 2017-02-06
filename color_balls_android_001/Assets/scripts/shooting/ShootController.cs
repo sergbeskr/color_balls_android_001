@@ -11,6 +11,9 @@ public class ShootController : MonoBehaviour {
 	[SerializeField]
 	private BulletsPool pool;
 
+	[SerializeField]
+	private ParticleSystem explosion;
+
 	private Vector3 mousePosition;
 	private Vector3 directionRay;
 	private Vector3 position;
@@ -19,13 +22,16 @@ public class ShootController : MonoBehaviour {
 	private float m_height = 15;
 
 	IBulletsElement element;
-	public float fireRate = 1.0f;
-	private float lastShot = 0.0f;
-	private float dps = -1;
+
+	private bool allowfire = true;
+
+	void Start()
+	{
+	}
 
 	public void FixedUpdate()
 	{
-		if (Time.time > fireRate + lastShot) {
+		if (allowfire) {
 			if (!UIController.isPause) {
 				if (Input.GetMouseButtonDown (0) && GameController.playerAlive && !EventSystem.current.IsPointerOverGameObject ()) {
 					ActivateBall ();
@@ -46,8 +52,10 @@ public class ShootController : MonoBehaviour {
 						forceSpeed = forceSpeed * 2.33f;
 						element.AddForce (directionRay, forceSpeed, m_height);
 						Debug.Log ("___" + distance + "___" + m_height + "___" + forceSpeed + "___" + directionRay);
-						lastShot = Time.time;
-						//
+
+					//
+
+						StartCoroutine (AllowFire());
 					}
 				}
 			}
@@ -60,5 +68,12 @@ public class ShootController : MonoBehaviour {
 		element.SetPosition(emitter.position);
 		element.Activate();
 	}
-			
+
+	private IEnumerator AllowFire()
+	{
+		allowfire = false;
+		yield return new WaitForSeconds (1f);
+
+		allowfire = true;
+	}
 }
