@@ -11,7 +11,7 @@ public class UIController : MonoBehaviour {
 	private Slider sliderHealth, musicVolumeSlider, soundVolumeSlider; 
 
 	[SerializeField]
-	private GameObject gameOver, audioSettings, gamePause, gameUI, videoSettings, win;
+	private GameObject gameOver, audioSettings, gamePause, gameUI, videoSettings, win, gameController;
 
 	[SerializeField]
 	private Toggle muteMusic, muteSounds;
@@ -22,61 +22,47 @@ public class UIController : MonoBehaviour {
 	[SerializeField]
 	private Text killedText;
 
-	public delegate void OnChangeColorMethod (string btnColor);
+	[SerializeField]
+	private Camera camera1, camera2;
 
-	public static event OnChangeColorMethod OnChangeColor;
+	public delegate void ChangeColorMethod (string btnColor);
 
-	public static bool isPause = false;
-	public static bool isStarted = false;
+	public static event ChangeColorMethod OnChangeColor;
+
+	public static bool isPause;
+	public static bool isStarted;
+
 
 	// Use this for initialization
 	void Start () {
+		int k;
+		isPause = false;
+		isStarted = false;
+		LoadCameraSetings ();
 		AudioManager.PlayMusic("Level1");
+
+		GameController.OnWin += Win;
+
+		k = 0;
+
+		Monster.OnKill += () => {
+			k++;
+			killedText.text = k.ToString();
+		};
+			
 	}
 	
 	// Update is called once per frame
 	void Update () {
 
-		killedText.text = GameController.killedMonsters.ToString();
-
 		sliderHealth.value = GameController.canonHealth;
+
 		if (!GameController.playerAlive) {
 			gameUI.SetActive (false);
 			gameOver.SetActive (true);
 		}
 
-		// on click key number, temp
-		if (Input.GetKey ("1")) {
-			if (OnChangeColor != null) {
-				OnChangeColor ("red");
-			}
-		}
-		if (Input.GetKey ("2")) {
-			if (OnChangeColor != null) {
-				OnChangeColor ("yellow");
-			}
-		}
-		if (Input.GetKey ("3")) {
-			if (OnChangeColor != null) {
-				OnChangeColor ("green");
-			}
-		}
-		if (Input.GetKey ("4")) {
-			if (OnChangeColor != null) {
-				OnChangeColor ("blue");
-			}
-		}
-		if (Input.GetKey ("5")) {
-			if (OnChangeColor != null) {
-				OnChangeColor ("magenta");
-			}
-		}
-
-		// temp
-		if (GameController.win) {
-			gameUI.SetActive (false);
-			win.SetActive (true);
-		}
+		OnKeyChangeColor ();
 	}
 
 	public void OnClikcColorButton()
@@ -140,5 +126,50 @@ public class UIController : MonoBehaviour {
 	{
 		gamePause.SetActive (false);
 		videoSettings.SetActive (true);
+	}
+
+	void OnKeyChangeColor()
+	{
+		// on click key number, temp
+		if (OnChangeColor != null) {
+			for (int i = 0; i < 5; i++) {
+				if (Input.GetKey ((i+1).ToString ())) {
+					OnChangeColor (GameController.colorsStringArray [i]);
+				}
+			}
+		}
+	}
+
+	public void OnNextLevelButton()
+	{
+		SceneManager.LoadScene ("scene_001");
+	}
+
+	void Win()
+	{
+		gameUI.SetActive (false);
+		win.SetActive (true);
+	}
+
+	void LoadCameraSetings()
+	{
+		Debug.Log ("Load ");
+		if (PlayerPrefs.HasKey ("Camera")) {
+			int c = PlayerPrefs.GetInt ("Camera");
+			if (c == 1) {
+				Debug.Log ("c " + c);
+				camera2.gameObject.SetActive (false);
+				camera1.gameObject.SetActive (true);
+			} else {
+				Debug.Log ("c " + c);
+				camera1.gameObject.SetActive (false);
+				camera2.gameObject.SetActive (true);
+			}
+		}
+	}
+
+	void OnDestroy()
+	{
+		GameController.OnWin -= Win;
 	}
 }

@@ -8,6 +8,9 @@ public class MonsterMovement : MonoBehaviour {
 	[SerializeField]
 	private Transform player;
 
+	public delegate void playerDamage ();
+	public static event playerDamage OnPlayerDamage;
+
 	// Use this for initialization
 	void Start () {
 		
@@ -27,8 +30,15 @@ public class MonsterMovement : MonoBehaviour {
 		if (collider.gameObject.tag == "Fence") {
 			
 			GetComponent<IMonster>().Death();
-			GameController.canonHealth -= GameController.damage; 
+			if (OnPlayerDamage != null) {
+				OnPlayerDamage ();
+			}
 
 		}
+	}
+
+	void OnDestroy()
+	{
+		OnPlayerDamage = null;
 	}
 }

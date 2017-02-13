@@ -6,6 +6,9 @@ public class Monster : MonoBehaviour, IMonster {
 	public float monsterHealth{ get; set;}
 	public Color monsterColor{ get; set;}
 
+	public delegate void Kill();
+	public static event Kill OnKill;
+
 	public void Awake()
 	{
 		BulletsElement.OnBang += Hit;
@@ -15,7 +18,7 @@ public class Monster : MonoBehaviour, IMonster {
 	public void Death ()
 	{
 		BulletsElement.OnBang -= Hit;
-		GameController.killedMonsters++;
+		GameController.deadMonsters++;
 		gameObject.SetActive(false);
 	}
 
@@ -23,6 +26,8 @@ public class Monster : MonoBehaviour, IMonster {
 	{
 		if (c.transform == this.transform) {
 			if (ballColor == monsterColor) {
+				if (OnKill != null)
+					OnKill ();
 				Death ();
 			} else {
 				monsterHealth -= 15;
@@ -42,4 +47,8 @@ public class Monster : MonoBehaviour, IMonster {
 		monsterColor = color;
 	}
 
+	void OnDestroy()
+	{
+		OnKill = null;
+	}
 }
