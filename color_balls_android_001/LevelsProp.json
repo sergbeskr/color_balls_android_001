@@ -1,0 +1,20 @@
+{ "levels" : [ 
+				{
+				  "level" : "1"
+				  "canonHealth" : "100"
+				  "maxMonsterHealth" : "25"
+				  "damage" : "25"
+				  "spawnMonstersRadius" : "5"
+				  "startNumberOfMonsters" : "10"
+				},
+				{
+				  "level" : "2"
+				  "canonHealth" : "100"
+				  "maxMonsterHealth" : "35"
+				  "damage" : "35"
+				  "spawnMonstersRadius" : "10"
+				  "startNumberOfMonsters" : "15"
+				}
+				
+]
+}
