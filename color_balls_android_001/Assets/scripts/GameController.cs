@@ -4,8 +4,6 @@ using System.IO;
 
 public class GameController : MonoBehaviour {
 
-
-	public static byte level = 1;
 	public static bool playerAlive; 
 	public static float canonHealth;
 	public static float maxMonsterHealth;
@@ -19,19 +17,16 @@ public class GameController : MonoBehaviour {
 		{"blue", Color.blue},
 		{"magenta", Color.magenta},
 	};
+	public static LevelProps[] levelProps;
 
-
-
-	private int curr_number;
 	private int startNumber;	
 	private int damage;
-	private GameObject spawnerMonstersPref;
+	private int numberOfSpawners;
+	private int killedMonsers = 0;
+	private GameObject spawnerMonstersPref;	
 	
 	private string path;
 	private string jsonString;
-
-	public delegate void StopSpawn ();
-	public static event StopSpawn OnStopSpawn;
 
 	public delegate void Win ();
 	public static event Win OnWin;
@@ -39,60 +34,48 @@ public class GameController : MonoBehaviour {
 	void Start () {
 		Init();
 		spawnerSpawn ();
-		SpawnerMonsters.OnSpawn += () => curr_number--;
 		MonsterMovement.OnPlayerDamage += () => canonHealth -= damage;
-	
 	}
 
 	void Update()
 	{
-		if (OnWin != null && deadMonsters == startNumber) {
+		if (OnWin != null && deadMonsters == startNumber * numberOfSpawners) {
 			OnWin ();
-		}
-
-		if (OnStopSpawn != null && curr_number == 1) {
-			OnStopSpawn ();
 		}
 
 	}
 
 	void Init()
 	{
-		/*damage = 25;
-		startNumber = 10;
-		curr_number = startNumber;
-		playerAlive = true;
-		canonHealth = 100;
-		maxMonsterHealth = 50;
-		spawnMonstersRadius = 5;
-		deadMonsters = 0;*/
-		path = "LevelsProp.json";
+		path = Application.streamingAssetsPath + "/LevelsProp.json";
 		jsonString = File.ReadAllText(path);
-		LevelsProps levelsProps = JsonUtility.FromJson<LevelsProps>(jsonString);
-		
-		canonHealth = levelsProps.levels[level].canonHealth;
-		//startNumber = levels[level].startNumberOfMonsters;
-		//maxMonsterHealth = levels[level].maxMonsterHealth;
-		//damage = levels[level].damage;
-		//spawnMonstersRadius = levels[level].spawnMonstersRadius;
+		levelProps = JsonHelper.FromJson<LevelProps> (jsonString);
+
+		int l = LevelProps.levelCurr - 1;
+		canonHealth = levelProps[l].canonHealth;
+		startNumber = levelProps[l].startNumberOfMonsters;
+		maxMonsterHealth = levelProps[l].maxMonsterHealth;
+		damage = levelProps[l].damage;
+		spawnMonstersRadius = levelProps[l].spawnMonstersRadius;
+		numberOfSpawners = levelProps [l].numberOfSpawners;
 		
 		playerAlive = true;
 		deadMonsters = 0;
-		curr_number = startNumber;
 		
 	}
 
 
 	void spawnerSpawn()
 	{
-		Debug.Log ("spawner");
-
-		//for (int i = 1; i <= number;  i++) {
-		//	Vector3 pos = new Vector3 (Random.Range (0f, 150f), 3, Random.Range (0f, 150f));
-		Vector3 pos = new Vector3 (-20f, 3, 20f);
-		Instantiate (Resources.Load ("Prefabs/Spawner"), pos, Quaternion.identity);
-		//}
+		float k = spawnMonstersRadius / 2;
+		for (int i = 1; i <= numberOfSpawners;  i++) {
+			Vector3 pos = new Vector3 (Random.Range (-20f - k, -50f + k), 3, Random.Range (20f + k, 50f - k));
+			Instantiate (Resources.Load ("Prefabs/Spawner"), pos, Quaternion.identity);
+		}
 	}
 		
-		
+	void OnDestroy()
+	{
+		OnWin = null;
+	}
 }

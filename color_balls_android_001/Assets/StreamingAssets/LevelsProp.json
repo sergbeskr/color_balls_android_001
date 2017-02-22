@@ -1,0 +1,36 @@
+{
+	"levels": [ 
+				{
+				  "level": 1,
+				  "canonHealth": 100,
+				  "maxMonsterHealth": 25,
+				  "damage": 25,
+				  "spawnMonstersRadius": 5,
+				  "startNumberOfMonsters": 10,
+				  "numberOfSpawners": 1,
+				  "timeOfSpawn": 3
+				},
+				{
+				  "level": 2,
+				  "canonHealth": 150,
+				  "maxMonsterHealth": 35,
+				  "damage": 35,
+				  "spawnMonstersRadius": 10,
+				  "startNumberOfMonsters": 6,
+				  "numberOfSpawners": 2,
+				  "timeOfSpawn": 3
+				},
+				{
+				  "level": 3,
+				  "canonHealth": 150,
+				  "maxMonsterHealth": 55,
+				  "damage": 55,
+				  "spawnMonstersRadius": 10,
+				  "startNumberOfMonsters": 6,
+				  "numberOfSpawners": 2,
+				  "timeOfSpawn": 2.5
+				}
+	]
+}
+
+

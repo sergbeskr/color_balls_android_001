@@ -51,7 +51,7 @@ public class ShootController : MonoBehaviour {
 						//Debug.Log("___"+distance/ m_height);
 						forceSpeed = forceSpeed * 2.33f;
 						element.AddForce (directionRay, forceSpeed, m_height);
-						Debug.Log ("___" + distance + "___" + m_height + "___" + forceSpeed + "___" + directionRay);
+						//Debug.Log ("___" + distance + "___" + m_height + "___" + forceSpeed + "___" + directionRay);
 
 					//
 

@@ -101,6 +101,7 @@ public class BulletsElement : MonoBehaviour, IBulletsElement {
 		rend.material.color = m_color;
 		colorBall = m_color;
 	}
+		
 
 	void OnDestroy()
 	{

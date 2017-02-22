@@ -26,17 +26,21 @@ public class Monster : MonoBehaviour, IMonster {
 	{
 		if (c.transform == this.transform) {
 			if (ballColor == monsterColor) {
-				if (OnKill != null)
+				if (OnKill != null) {
 					OnKill ();
-				Death ();
+					Death ();
+				}
 			} else {
 				monsterHealth -= 15;
+				Debug.Log ("helth " + monsterHealth + " " + monsterColor);
 			}
 		}
 
 		if (monsterHealth <= 0) {
-			
-			Death ();
+			if (OnKill != null) {
+				OnKill ();
+				Death ();
+			}
 		}
 	}
 

@@ -20,13 +20,15 @@ public class UIController : MonoBehaviour {
 	private GameObject[] colorButtons;
 
 	[SerializeField]
-	private Text killedText;
+	private Text killedText, levelText;
 
 	[SerializeField]
 	private Camera camera1, camera2;
 
-	public delegate void ChangeColorMethod (string btnColor);
+	[SerializeField]
+	private Button nextBtn;
 
+	public delegate void ChangeColorMethod (string btnColor);
 	public static event ChangeColorMethod OnChangeColor;
 
 	public static bool isPause;
@@ -39,6 +41,7 @@ public class UIController : MonoBehaviour {
 		isPause = false;
 		isStarted = false;
 		LoadCameraSetings ();
+		levelText.text = LevelProps.levelCurr.ToString ();
 		AudioManager.PlayMusic("Level1");
 
 		GameController.OnWin += Win;
@@ -113,6 +116,7 @@ public class UIController : MonoBehaviour {
 
 	public void OnRestart()
 	{
+		LevelProps.levelCurr = 1;
 		SceneManager.LoadScene ("scene_001");
 	}
 		
@@ -142,34 +146,34 @@ public class UIController : MonoBehaviour {
 
 	public void OnNextLevelButton()
 	{
+		
 		SceneManager.LoadScene ("scene_001");
 	}
 
 	void Win()
 	{
+		LevelProps.levelCurr++;
 		gameUI.SetActive (false);
 		win.SetActive (true);
+
+		if (LevelProps.levelCurr > GameController.levelProps.Length) {
+			nextBtn.interactable = false;
+		}
+			
+		GameController.OnWin -= Win;
 	}
 
 	void LoadCameraSetings()
 	{
-		Debug.Log ("Load ");
 		if (PlayerPrefs.HasKey ("Camera")) {
 			int c = PlayerPrefs.GetInt ("Camera");
 			if (c == 1) {
-				Debug.Log ("c " + c);
 				camera2.gameObject.SetActive (false);
 				camera1.gameObject.SetActive (true);
 			} else {
-				Debug.Log ("c " + c);
 				camera1.gameObject.SetActive (false);
 				camera2.gameObject.SetActive (true);
 			}
 		}
-	}
-
-	void OnDestroy()
-	{
-		GameController.OnWin -= Win;
 	}
 }
